@@ -1,3 +1,5 @@
+'use client'
+
 import { Box, Card, CardContent, Typography, TextField, Button, Chip, Avatar, Stack, FormControl, InputLabel, Select, MenuItem, Tooltip } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
