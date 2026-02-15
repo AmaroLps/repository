@@ -1,3 +1,400 @@
+// 'use client'
+// import React, { useState } from 'react';
+// import { 
+//   Server, 
+//   Database, 
+//   Lock, 
+//   Users, 
+//   BarChart3, 
+//   FileText, 
+//   MessageSquare, 
+//   GitBranch, 
+//   Shield, 
+//   Clock 
+// } from 'lucide-react';
+
+// interface Service {
+//   name: string;
+//   icon: React.ComponentType<any>;
+//   color: string;
+//   description: string;
+//   tech: string[];
+// }
+
+// interface Services {
+//   gateway: Service;
+//   eureka: Service;
+//   usuarios: Service;
+//   indicadores: Service;
+//   pedidos: Service;
+//   rabbitmq: Service;
+// }
+
+// interface ServiceCardProps {
+//   serviceKey: string;
+//   service: Service;
+//   isMain?: boolean;
+//   isSelected: boolean;
+//   onClick: () => void;
+// }
+
+// const ServiceCard: React.FC<ServiceCardProps> = ({ 
+//   serviceKey, 
+//   service, 
+//   isMain = false, 
+//   isSelected, 
+//   onClick 
+// }) => {
+//   const IconComponent = service.icon;
+//   const colorMap: Record<string, string> = {
+//     'bg-purple-500': 'purple',
+//     'bg-blue-500': 'blue',
+//     'bg-green-500': 'green',
+//     'bg-orange-500': 'orange',
+//     'bg-red-500': 'red',
+//     'bg-yellow-500': 'yellow',
+//   };
+  
+//   const colorName = colorMap[service.color] || 'slate';
+  
+//   return (
+//     <div 
+//       className={`bg-slate-800 rounded-lg p-6 border-2 ${
+//         isSelected 
+//           ? `border-${colorName}-400 shadow-2xl scale-105` 
+//           : 'border-slate-600'
+//       } transition-all cursor-pointer shadow-xl ${
+//         isMain ? '' : 'flex-1 min-w-[280px] max-w-[320px]'
+//       }`}
+//       onClick={onClick}
+//     >
+//       <div className="flex items-center gap-3 mb-3">
+//         <div className={`p-3 ${service.color} rounded-lg`}>
+//           <IconComponent className={isMain ? 'w-7 h-7' : 'w-6 h-6'} />
+//         </div>
+//         <div className={isMain ? 'flex-1' : ''}>
+//           <h3 className={`${isMain ? 'text-2xl' : 'text-lg'} font-bold text-white`}>
+//             {service.name}
+//           </h3>
+//           <p className="text-slate-400 text-sm">{service.description}</p>
+//         </div>
+//         {isMain && serviceKey === 'gateway' && <Lock className="w-6 h-6 text-purple-400" />}
+//         {isMain && serviceKey === 'eureka' && <Database className="w-6 h-6 text-blue-400" />}
+//         {isMain && serviceKey === 'rabbitmq' && <Clock className="w-6 h-6 text-yellow-400" />}
+//       </div>
+//       {isSelected && (
+//         <div className={`mt-4 ${isMain ? 'flex flex-wrap gap-2' : 'space-y-1'}`}>
+//           {service.tech.map((tech, idx) => (
+//             isMain ? (
+//               <span 
+//                 key={idx} 
+//                 className={`bg-${colorName}-900 text-${colorName}-200 px-3 py-1 rounded-full text-sm`}
+//               >
+//                 {tech}
+//               </span>
+//             ) : (
+//               <div 
+//                 key={idx} 
+//                 className={`bg-${colorName}-900 text-${colorName}-200 px-2 py-1 rounded text-xs`}
+//               >
+//                 {tech}
+//               </div>
+//             )
+//           ))}
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// const MicroservicesArchitecture: React.FC = () => {
+//   const [selectedService, setSelectedService] = useState<string | null>(null);
+
+//   const services: Services = {
+//     gateway: {
+//       name: 'Spring Cloud Gateway',
+//       icon: GitBranch,
+//       color: 'bg-purple-500',
+//       description: 'Punto de entrada único al sistema. Enruta las peticiones a los microservicios correspondientes.',
+//       tech: ['Spring Cloud Gateway', 'JWT Validation', 'Load Balancing', 'Rate Limiting']
+//     },
+//     eureka: {
+//       name: 'Eureka Server',
+//       icon: Server,
+//       color: 'bg-blue-500',
+//       description: 'Service Discovery. Registra y gestiona la ubicación de todos los microservicios.',
+//       tech: ['Spring Cloud Netflix Eureka', 'Service Registry', 'Health Checks', 'Auto-scaling']
+//     },
+//     usuarios: {
+//       name: 'MS Usuarios',
+//       icon: Users,
+//       color: 'bg-green-500',
+//       description: 'Gestión, registro y mantenimiento de usuarios del sistema.',
+//       tech: ['Spring Boot', 'Java 17', 'PostgreSQL', 'JWT Generation', 'BCrypt']
+//     },
+//     indicadores: {
+//       name: 'MS Indicadores',
+//       icon: BarChart3,
+//       color: 'bg-orange-500',
+//       description: 'Gestiona KPIs del call center: productividad, efectividad, atención de leads.',
+//       tech: ['Spring Boot', 'Java 17', 'PostgreSQL', 'Análisis de Datos', 'Reporting']
+//     },
+//     pedidos: {
+//       name: 'MS Gestión Pedidos',
+//       icon: FileText,
+//       color: 'bg-red-500',
+//       description: 'Gestiona solicitudes de información de indicadores. Proceso asíncrono con RabbitMQ.',
+//       tech: ['Spring Boot', 'Java 17', 'Spring WebFlux', 'RabbitMQ Producer', 'MongoDB']
+//     },
+//     rabbitmq: {
+//       name: 'RabbitMQ',
+//       icon: MessageSquare,
+//       color: 'bg-yellow-500',
+//       description: 'Message Broker para procesamiento asíncrono de pedidos de indicadores.',
+//       tech: ['Message Queue', 'Asynchronous Processing', 'Event-Driven', 'Dead Letter Queue']
+//     }
+//   };
+
+//   const frontend = {
+//     name: 'Frontend Angular + TypeScript',
+//     sections: [
+//       'Login (JWT)', 
+//       'Dashboard Indicadores', 
+//       'Registro Pedidos', 
+//       'Gestión Usuarios'
+//     ]
+//   };
+
+//   const flowSteps = [
+//     'Usuario se autentica en el frontend Angular (Login JWT)',
+//     'Gateway valida el token JWT y enruta al microservicio correspondiente',
+//     'Eureka Server gestiona el registro y descubrimiento de servicios',
+//     'MS Usuarios valida credenciales y permisos del usuario',
+//     'Usuario solicita indicadores con filtros (fechas, áreas, enfoques)',
+//     'MS Gestión Pedidos crea solicitud y envía a cola RabbitMQ (procesamiento asíncrono)',
+//     'Worker procesa pedido: consulta MS Indicadores y genera respuesta',
+//     'Dashboard muestra KPIs y trazabilidad de pedidos realizados'
+//   ];
+
+//   const techStack = [
+//     { icon: '☕', text: 'Java 17' },
+//     { icon: '🍃', text: 'Spring Boot 3.x' },
+//     { icon: '⚛️', text: 'Angular + TypeScript' },
+//     { icon: '🔐', text: 'JWT Security' },
+//     { icon: '🔄', text: 'WebFlux (Reactive)' },
+//     { icon: '🐰', text: 'RabbitMQ' },
+//     { icon: '🗄️', text: 'PostgreSQL' }
+//   ];
+
+//   return (
+//     <div className="w-full min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8">
+//       <div className="max-w-7xl mx-auto">
+//         {/* Header */}
+//         <div className="text-center mb-12 animate-fade-in">
+//           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+//             Plataforma Integral de Gestión y Análisis de Indicadores
+//           </h1>
+//           <p className="text-slate-300 text-lg md:text-xl">
+//             Arquitectura de Microservicios con Spring Boot, Eureka y RabbitMQ
+//           </p>
+//           <div className="mt-4 inline-flex items-center gap-2 bg-slate-800 px-4 py-2 rounded-full border border-slate-600">
+//             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+//             <span className="text-slate-400 text-sm">Java 17 • Spring Boot 3.x • Arquitectura Reactiva</span>
+//           </div>
+//         </div>
+
+//         {/* Architecture Diagram */}
+//         <div className="space-y-8">
+          
+//           {/* Frontend Layer */}
+//           <div className="bg-slate-800 rounded-lg p-6 border-2 border-cyan-500 shadow-xl hover:shadow-2xl transition-shadow">
+//             <div className="flex items-center justify-between mb-4">
+//               <div className="flex items-center gap-3">
+//                 <div className="p-2 bg-cyan-500 rounded-lg">
+//                   <Server className="w-6 h-6 text-white" />
+//                 </div>
+//                 <div>
+//                   <h3 className="text-xl font-bold text-white">{frontend.name}</h3>
+//                   <p className="text-slate-400 text-sm">Capa de Presentación</p>
+//                 </div>
+//               </div>
+//               <Shield className="w-6 h-6 text-cyan-400" />
+//             </div>
+//             <div className="flex flex-wrap gap-3">
+//               {frontend.sections.map((section, idx) => (
+//                 <div 
+//                   key={idx} 
+//                   className="bg-slate-700 px-4 py-2 rounded-lg border border-cyan-400 hover:bg-slate-600 transition-colors"
+//                 >
+//                   <span className="text-cyan-300 text-sm font-medium">{section}</span>
+//                 </div>
+//               ))}
+//             </div>
+//           </div>
+
+//           {/* Arrow Down */}
+//           <div className="flex justify-center">
+//             <div className="w-1 h-8 bg-gradient-to-b from-cyan-500 to-purple-500"></div>
+//           </div>
+
+//           {/* Gateway Layer */}
+//           <ServiceCard 
+//             serviceKey="gateway" 
+//             service={services.gateway} 
+//             isMain={true}
+//             isSelected={selectedService === 'gateway'}
+//             onClick={() => setSelectedService(selectedService === 'gateway' ? null : 'gateway')}
+//           />
+
+//           {/* Arrow Down */}
+//           <div className="flex justify-center">
+//             <div className="w-1 h-8 bg-gradient-to-b from-purple-500 to-blue-500"></div>
+//           </div>
+
+//           {/* Eureka Server */}
+//           <ServiceCard 
+//             serviceKey="eureka" 
+//             service={services.eureka} 
+//             isMain={true}
+//             isSelected={selectedService === 'eureka'}
+//             onClick={() => setSelectedService(selectedService === 'eureka' ? null : 'eureka')}
+//           />
+
+//           {/* Arrow Down - Branches */}
+//           <div className="flex justify-center">
+//             <svg width="400" height="60" className="overflow-visible">
+//               <line x1="200" y1="0" x2="200" y2="20" stroke="#3b82f6" strokeWidth="2"/>
+//               <line x1="200" y1="20" x2="50" y2="60" stroke="#10b981" strokeWidth="2"/>
+//               <line x1="200" y1="20" x2="200" y2="60" stroke="#f97316" strokeWidth="2"/>
+//               <line x1="200" y1="20" x2="350" y2="60" stroke="#ef4444" strokeWidth="2"/>
+//             </svg>
+//           </div>
+
+//           {/* Microservices Layer */}
+//           <div className="flex gap-6 justify-center flex-wrap">
+//             <ServiceCard 
+//               serviceKey="usuarios" 
+//               service={services.usuarios}
+//               isSelected={selectedService === 'usuarios'}
+//               onClick={() => setSelectedService(selectedService === 'usuarios' ? null : 'usuarios')}
+//             />
+//             <ServiceCard 
+//               serviceKey="indicadores" 
+//               service={services.indicadores}
+//               isSelected={selectedService === 'indicadores'}
+//               onClick={() => setSelectedService(selectedService === 'indicadores' ? null : 'indicadores')}
+//             />
+//             <ServiceCard 
+//               serviceKey="pedidos" 
+//               service={services.pedidos}
+//               isSelected={selectedService === 'pedidos'}
+//               onClick={() => setSelectedService(selectedService === 'pedidos' ? null : 'pedidos')}
+//             />
+//           </div>
+
+//           {/* Arrow to RabbitMQ */}
+//           <div className="flex justify-center">
+//             <div className="w-1 h-8 bg-gradient-to-b from-red-500 to-yellow-500"></div>
+//           </div>
+
+//           {/* RabbitMQ */}
+//           <ServiceCard 
+//             serviceKey="rabbitmq" 
+//             service={services.rabbitmq} 
+//             isMain={true}
+//             isSelected={selectedService === 'rabbitmq'}
+//             onClick={() => setSelectedService(selectedService === 'rabbitmq' ? null : 'rabbitmq')}
+//           />
+
+//         </div>
+
+//         {/* Tech Stack Summary */}
+//         <div className="mt-12 bg-slate-800 rounded-lg p-6 border border-slate-600 shadow-xl">
+//           <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+//             <Database className="w-6 h-6" />
+//             Stack Tecnológico
+//           </h3>
+//           <div className="flex flex-wrap gap-4">
+//             {techStack.map((tech, idx) => (
+//               <div 
+//                 key={idx} 
+//                 className="bg-slate-700 px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors"
+//               >
+//                 <span className="text-slate-300">{tech.icon} {tech.text}</span>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+
+//         {/* Flow Description */}
+//         <div className="mt-8 bg-gradient-to-r from-slate-800 to-slate-700 rounded-lg p-6 border border-slate-600 shadow-xl">
+//           <h3 className="text-2xl font-bold text-white mb-4">🔄 Flujo de Procesamiento</h3>
+//           <ol className="space-y-3 text-slate-300">
+//             {flowSteps.map((step, idx) => (
+//               <li key={idx} className="flex items-start gap-3 hover:text-white transition-colors">
+//                 <span className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5 text-sm">
+//                   {idx + 1}
+//                 </span>
+//                 <span>{step}</span>
+//               </li>
+//             ))}
+//           </ol>
+//         </div>
+
+//         {/* Key Features */}
+//         <div className="mt-8 bg-slate-800 rounded-lg p-6 border border-slate-600 shadow-xl">
+//           <h3 className="text-2xl font-bold text-white mb-4">✨ Características Clave</h3>
+//           <div className="space-y-3">
+//             <div className="flex items-start gap-3">
+//               <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+//               <div>
+//                 <h4 className="text-white font-semibold">Procesamiento Asíncrono</h4>
+//                 <p className="text-slate-400 text-sm">
+//                   RabbitMQ permite gestionar pedidos pesados sin bloquear la UI. Los usuarios reciben notificaciones cuando su reporte está listo.
+//                 </p>
+//               </div>
+//             </div>
+//             <div className="flex items-start gap-3">
+//               <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+//               <div>
+//                 <h4 className="text-white font-semibold">Alta Disponibilidad</h4>
+//                 <p className="text-slate-400 text-sm">
+//                   Eureka Server registra múltiples instancias de cada microservicio para balanceo de carga y tolerancia a fallos.
+//                 </p>
+//               </div>
+//             </div>
+//             <div className="flex items-start gap-3">
+//               <div className="w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
+//               <div>
+//                 <h4 className="text-white font-semibold">Seguridad Centralizada</h4>
+//                 <p className="text-slate-400 text-sm">
+//                   Gateway valida JWT tokens antes de enrutar peticiones, garantizando que solo usuarios autenticados accedan a los microservicios.
+//                 </p>
+//               </div>
+//             </div>
+//             <div className="flex items-start gap-3">
+//               <div className="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+//               <div>
+//                 <h4 className="text-white font-semibold">Trazabilidad Completa</h4>
+//                 <p className="text-slate-400 text-sm">
+//                   Cada pedido de indicadores queda registrado con usuario, fecha, filtros aplicados y estado de procesamiento.
+//                 </p>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Instructions */}
+//         <div className="mt-6 text-center text-slate-400 text-sm">
+//           <p>💡 Haz clic en cualquier componente para ver más detalles técnicos</p>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default MicroservicesArchitecture;
+
 'use client'
 import React, { useState } from 'react';
 import { 
@@ -10,7 +407,9 @@ import {
   MessageSquare, 
   GitBranch, 
   Shield, 
-  Clock 
+  Clock,
+  Settings,
+  FileCode
 } from 'lucide-react';
 
 interface Service {
@@ -23,6 +422,7 @@ interface Service {
 
 interface Services {
   gateway: Service;
+  configServer: Service;
   eureka: Service;
   usuarios: Service;
   indicadores: Service;
@@ -48,6 +448,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   const IconComponent = service.icon;
   const colorMap: Record<string, string> = {
     'bg-purple-500': 'purple',
+    'bg-teal-500': 'teal',
     'bg-blue-500': 'blue',
     'bg-green-500': 'green',
     'bg-orange-500': 'orange',
@@ -79,6 +480,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
           <p className="text-slate-400 text-sm">{service.description}</p>
         </div>
         {isMain && serviceKey === 'gateway' && <Lock className="w-6 h-6 text-purple-400" />}
+        {isMain && serviceKey === 'configServer' && <FileCode className="w-6 h-6 text-teal-400" />}
         {isMain && serviceKey === 'eureka' && <Database className="w-6 h-6 text-blue-400" />}
         {isMain && serviceKey === 'rabbitmq' && <Clock className="w-6 h-6 text-yellow-400" />}
       </div>
@@ -117,6 +519,13 @@ const MicroservicesArchitecture: React.FC = () => {
       color: 'bg-purple-500',
       description: 'Punto de entrada único al sistema. Enruta las peticiones a los microservicios correspondientes.',
       tech: ['Spring Cloud Gateway', 'JWT Validation', 'Load Balancing', 'Rate Limiting']
+    },
+    configServer: {
+      name: 'Config Server',
+      icon: Settings,
+      color: 'bg-teal-500',
+      description: 'Centraliza la configuración de todos los microservicios. Gestiona propiedades por entorno (dev, test, prod).',
+      tech: ['Spring Cloud Config', 'Git Backend', 'Environment Profiles', 'Refresh Scope', 'Encryption Support']
     },
     eureka: {
       name: 'Eureka Server',
@@ -166,6 +575,7 @@ const MicroservicesArchitecture: React.FC = () => {
   };
 
   const flowSteps = [
+    'Config Server proporciona configuraciones centralizadas a todos los microservicios (DB, URLs, credenciales)',
     'Usuario se autentica en el frontend Angular (Login JWT)',
     'Gateway valida el token JWT y enruta al microservicio correspondiente',
     'Eureka Server gestiona el registro y descubrimiento de servicios',
@@ -179,6 +589,7 @@ const MicroservicesArchitecture: React.FC = () => {
   const techStack = [
     { icon: '☕', text: 'Java 17' },
     { icon: '🍃', text: 'Spring Boot 3.x' },
+    { icon: '⚙️', text: 'Spring Cloud Config' },
     { icon: '⚛️', text: 'Angular + TypeScript' },
     { icon: '🔐', text: 'JWT Security' },
     { icon: '🔄', text: 'WebFlux (Reactive)' },
@@ -195,17 +606,50 @@ const MicroservicesArchitecture: React.FC = () => {
             Plataforma Integral de Gestión y Análisis de Indicadores
           </h1>
           <p className="text-slate-300 text-lg md:text-xl">
-            Arquitectura de Microservicios con Spring Boot, Eureka y RabbitMQ
+            Arquitectura de Microservicios con Spring Boot, Config Server, Eureka y RabbitMQ
           </p>
           <div className="mt-4 inline-flex items-center gap-2 bg-slate-800 px-4 py-2 rounded-full border border-slate-600">
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-            <span className="text-slate-400 text-sm">Java 17 • Spring Boot 3.x • Arquitectura Reactiva</span>
+            <span className="text-slate-400 text-sm">Java 17 • Spring Boot 3.x • Arquitectura Reactiva • Configuración Centralizada</span>
           </div>
         </div>
 
         {/* Architecture Diagram */}
         <div className="space-y-8">
           
+          {/* Config Server Layer - NEW! */}
+          <div className="relative">
+            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-teal-500 text-white px-3 py-1 rounded-full text-xs font-bold z-10">
+              CAPA DE CONFIGURACIÓN
+            </div>
+            <ServiceCard 
+              serviceKey="configServer" 
+              service={services.configServer} 
+              isMain={true}
+              isSelected={selectedService === 'configServer'}
+              onClick={() => setSelectedService(selectedService === 'configServer' ? null : 'configServer')}
+            />
+          </div>
+
+          {/* Arrows from Config Server to all services */}
+          <div className="relative h-16">
+            <svg width="100%" height="80" className="overflow-visible">
+              {/* Central vertical line */}
+              <line x1="50%" y1="0" x2="50%" y2="40" stroke="#14b8a6" strokeWidth="2" strokeDasharray="5,5"/>
+              
+              {/* Horizontal distribution line */}
+              <line x1="10%" y1="40" x2="90%" y2="40" stroke="#14b8a6" strokeWidth="2" strokeDasharray="5,5"/>
+              
+              {/* Lines to Gateway, Eureka, and Microservices */}
+              <line x1="25%" y1="40" x2="25%" y2="80" stroke="#14b8a6" strokeWidth="2" strokeDasharray="5,5"/>
+              <line x1="50%" y1="40" x2="50%" y2="80" stroke="#14b8a6" strokeWidth="2" strokeDasharray="5,5"/>
+              <line x1="75%" y1="40" x2="75%" y2="80" stroke="#14b8a6" strokeWidth="2" strokeDasharray="5,5"/>
+            </svg>
+            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-slate-700 px-2 py-1 rounded text-teal-400 text-xs">
+              Provee configuraciones
+            </div>
+          </div>
+
           {/* Frontend Layer */}
           <div className="bg-slate-800 rounded-lg p-6 border-2 border-cyan-500 shadow-xl hover:shadow-2xl transition-shadow">
             <div className="flex items-center justify-between mb-4">
@@ -308,6 +752,46 @@ const MicroservicesArchitecture: React.FC = () => {
 
         </div>
 
+        {/* Config Server Info Box - NEW! */}
+        {selectedService === 'configServer' && (
+          <div className="mt-8 bg-gradient-to-r from-teal-900 to-teal-800 rounded-lg p-6 border-2 border-teal-400 shadow-2xl animate-fade-in">
+            <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+              <Settings className="w-6 h-6" />
+              Configuración Centralizada con Config Server
+            </h3>
+            <div className="space-y-4 text-teal-100">
+              <div>
+                <h4 className="font-semibold text-white mb-2">📁 Repositorio Git Backend</h4>
+                <p className="text-sm">
+                  Todas las configuraciones se almacenan en un repositorio Git (GitHub/GitLab). Esto permite:
+                  versionado de configuraciones, auditoría de cambios, rollback fácil a configuraciones anteriores.
+                </p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-white mb-2">🌍 Perfiles por Entorno</h4>
+                <p className="text-sm">
+                  Archivos separados por entorno: <code className="bg-teal-950 px-2 py-1 rounded">application-dev.yml</code>, 
+                  <code className="bg-teal-950 px-2 py-1 rounded ml-1">application-test.yml</code>, 
+                  <code className="bg-teal-950 px-2 py-1 rounded ml-1">application-prod.yml</code>
+                </p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-white mb-2">🔄 Refresh en Caliente</h4>
+                <p className="text-sm">
+                  Los microservicios pueden recargar configuraciones sin reiniciarse usando <code className="bg-teal-950 px-2 py-1 rounded">@RefreshScope</code> 
+                  y el endpoint <code className="bg-teal-950 px-2 py-1 rounded">/actuator/refresh</code>
+                </p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-white mb-2">🔐 Cifrado de Propiedades Sensibles</h4>
+                <p className="text-sm">
+                  Passwords, API keys y secrets se almacenan cifrados. Config Server los descifra antes de entregarlos a los microservicios.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Tech Stack Summary */}
         <div className="mt-12 bg-slate-800 rounded-lg p-6 border border-slate-600 shadow-xl">
           <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
@@ -332,7 +816,7 @@ const MicroservicesArchitecture: React.FC = () => {
           <ol className="space-y-3 text-slate-300">
             {flowSteps.map((step, idx) => (
               <li key={idx} className="flex items-start gap-3 hover:text-white transition-colors">
-                <span className="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5 text-sm">
+                <span className={`${idx === 0 ? 'bg-teal-600' : 'bg-purple-600'} text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5 text-sm`}>
                   {idx + 1}
                 </span>
                 <span>{step}</span>
@@ -345,6 +829,15 @@ const MicroservicesArchitecture: React.FC = () => {
         <div className="mt-8 bg-slate-800 rounded-lg p-6 border border-slate-600 shadow-xl">
           <h3 className="text-2xl font-bold text-white mb-4">✨ Características Clave</h3>
           <div className="space-y-3">
+            <div className="flex items-start gap-3">
+              <div className="w-2 h-2 bg-teal-500 rounded-full mt-2"></div>
+              <div>
+                <h4 className="text-white font-semibold">Configuración Centralizada</h4>
+                <p className="text-slate-400 text-sm">
+                  Config Server centraliza todas las propiedades de microservicios en un único repositorio Git, facilitando gestión y auditoría.
+                </p>
+              </div>
+            </div>
             <div className="flex items-start gap-3">
               <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
               <div>
