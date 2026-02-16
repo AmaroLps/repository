@@ -1,7 +1,16 @@
+'use client'
+
 import Login from "@/src/components/app/login/Login";
 import PresentacionMVP from "@/src/components/app/Presentation";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
-return <Login/>
+ const router = useRouter()
+
+    useEffect(()=>{
+        router.push("login")
+    },[])
+return <></>
 }

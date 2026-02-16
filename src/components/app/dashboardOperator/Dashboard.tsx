@@ -1,6 +1,21 @@
-'use client'
+"use client";
 
-import { Box, Card, CardContent, Typography, TextField, Button, Chip, Avatar, Stack, FormControl, InputLabel, Select, MenuItem, Tooltip } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+  Button,
+  Chip,
+  Avatar,
+  Stack,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Tooltip,
+} from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -17,6 +32,8 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
+import { People, Business } from '@mui/icons-material';
+import { useRouter } from "next/navigation";
 
 type UserStatus = "pending" | "registered" | "inactive";
 
@@ -49,7 +66,7 @@ const mockUsers: User[] = [
     policiesCount: 2,
     propertiesCount: 3,
     incidentsCount: 5,
-    lastActivity: "2024-02-05"
+    lastActivity: "2024-02-05",
   },
   {
     id: "2",
@@ -63,7 +80,7 @@ const mockUsers: User[] = [
     policiesCount: 1,
     propertiesCount: 1,
     incidentsCount: 2,
-    lastActivity: "2024-02-06"
+    lastActivity: "2024-02-06",
   },
   {
     id: "3",
@@ -77,7 +94,7 @@ const mockUsers: User[] = [
     policiesCount: 0,
     propertiesCount: 0,
     incidentsCount: 0,
-    lastActivity: "2024-02-01"
+    lastActivity: "2024-02-01",
   },
   {
     id: "4",
@@ -91,7 +108,7 @@ const mockUsers: User[] = [
     policiesCount: 3,
     propertiesCount: 2,
     incidentsCount: 8,
-    lastActivity: "2024-02-04"
+    lastActivity: "2024-02-04",
   },
   {
     id: "5",
@@ -105,7 +122,7 @@ const mockUsers: User[] = [
     policiesCount: 0,
     propertiesCount: 0,
     incidentsCount: 0,
-    lastActivity: "2024-02-03"
+    lastActivity: "2024-02-03",
   },
   {
     id: "6",
@@ -119,7 +136,7 @@ const mockUsers: User[] = [
     policiesCount: 1,
     propertiesCount: 2,
     incidentsCount: 3,
-    lastActivity: "2024-02-05"
+    lastActivity: "2024-02-05",
   },
   {
     id: "7",
@@ -133,7 +150,7 @@ const mockUsers: User[] = [
     policiesCount: 2,
     propertiesCount: 1,
     incidentsCount: 1,
-    lastActivity: "2023-12-15"
+    lastActivity: "2023-12-15",
   },
   {
     id: "8",
@@ -147,7 +164,7 @@ const mockUsers: User[] = [
     policiesCount: 0,
     propertiesCount: 0,
     incidentsCount: 0,
-    lastActivity: "2024-02-04"
+    lastActivity: "2024-02-04",
   },
   {
     id: "9",
@@ -161,7 +178,7 @@ const mockUsers: User[] = [
     policiesCount: 0,
     propertiesCount: 0,
     incidentsCount: 0,
-    lastActivity: "2024-02-05"
+    lastActivity: "2024-02-05",
   },
   {
     id: "10",
@@ -175,8 +192,8 @@ const mockUsers: User[] = [
     policiesCount: 2,
     propertiesCount: 4,
     incidentsCount: 6,
-    lastActivity: "2024-02-06"
-  }
+    lastActivity: "2024-02-06",
+  },
 ];
 
 function UsersManagement() {
@@ -185,7 +202,7 @@ function UsersManagement() {
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [statusFilter, setStatusFilter] = useState<UserStatus | "all">("all");
   const [searchField, setSearchField] = useState<string>("all");
-
+  const router = useRouter();
   // Filtrado avanzado
   const filteredUsers = useMemo(() => {
     return mockUsers.filter((user) => {
@@ -220,7 +237,10 @@ function UsersManagement() {
       }
 
       // Filtro de fechas (usa preRegistrationDate)
-      if (startDate && dayjs(user.preRegistrationDate).isBefore(startDate, "day")) {
+      if (
+        startDate &&
+        dayjs(user.preRegistrationDate).isBefore(startDate, "day")
+      ) {
         return false;
       }
       if (endDate && dayjs(user.preRegistrationDate).isAfter(endDate, "day")) {
@@ -235,12 +255,30 @@ function UsersManagement() {
   const metrics = useMemo(() => {
     const total = filteredUsers.length;
     const pending = filteredUsers.filter((u) => u.status === "pending").length;
-    const registered = filteredUsers.filter((u) => u.status === "registered").length;
-    const totalPolicies = filteredUsers.reduce((sum, u) => sum + u.policiesCount, 0);
-    const totalProperties = filteredUsers.reduce((sum, u) => sum + u.propertiesCount, 0);
-    const totalIncidents = filteredUsers.reduce((sum, u) => sum + u.incidentsCount, 0);
+    const registered = filteredUsers.filter(
+      (u) => u.status === "registered",
+    ).length;
+    const totalPolicies = filteredUsers.reduce(
+      (sum, u) => sum + u.policiesCount,
+      0,
+    );
+    const totalProperties = filteredUsers.reduce(
+      (sum, u) => sum + u.propertiesCount,
+      0,
+    );
+    const totalIncidents = filteredUsers.reduce(
+      (sum, u) => sum + u.incidentsCount,
+      0,
+    );
 
-    return { total, pending, registered, totalPolicies, totalProperties, totalIncidents };
+    return {
+      total,
+      pending,
+      registered,
+      totalPolicies,
+      totalProperties,
+      totalIncidents,
+    };
   }, [filteredUsers]);
 
   // Limpiar filtros
@@ -294,7 +332,7 @@ function UsersManagement() {
       field: "email",
       headerName: "Correo Electrónico",
       flex: 1,
-      minWidth: 220,
+      minWidth: 180,
     },
     {
       field: "phone",
@@ -322,60 +360,60 @@ function UsersManagement() {
         );
       },
     },
-    {
-      field: "policiesCount",
-      headerName: "Pólizas",
-      width: 100,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => (
-        <Tooltip title="Número de pólizas registradas">
-          <Chip
-            icon={<DescriptionIcon />}
-            label={params.value}
-            color={params.value > 0 ? "primary" : "default"}
-            size="small"
-            variant="filled"
-          />
-        </Tooltip>
-      ),
-    },
-    {
-      field: "propertiesCount",
-      headerName: "Propiedades",
-      width: 120,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => (
-        <Tooltip title="Número de propiedades (vehículos/inmuebles)">
-          <Chip
-            icon={<HomeIcon />}
-            label={params.value}
-            color={params.value > 0 ? "info" : "default"}
-            size="small"
-            variant="filled"
-          />
-        </Tooltip>
-      ),
-    },
-    {
-      field: "incidentsCount",
-      headerName: "Incidencias",
-      width: 120,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => (
-        <Tooltip title="Total de incidencias registradas">
-          <Chip
-            icon={<ReportProblemIcon />}
-            label={params.value}
-            color={params.value > 0 ? "secondary" : "default"}
-            size="small"
-            variant="filled"
-          />
-        </Tooltip>
-      ),
-    },
+    // {
+    //   field: "policiesCount",
+    //   headerName: "Pólizas",
+    //   width: 100,
+    //   align: "center",
+    //   headerAlign: "center",
+    //   renderCell: (params) => (
+    //     <Tooltip title="Número de pólizas registradas">
+    //       <Chip
+    //         icon={<DescriptionIcon />}
+    //         label={params.value}
+    //         color={params.value > 0 ? "primary" : "default"}
+    //         size="small"
+    //         variant="filled"
+    //       />
+    //     </Tooltip>
+    //   ),
+    // },
+    // {
+    //   field: "propertiesCount",
+    //   headerName: "Propiedades",
+    //   width: 120,
+    //   align: "center",
+    //   headerAlign: "center",
+    //   renderCell: (params) => (
+    //     <Tooltip title="Número de propiedades (vehículos/inmuebles)">
+    //       <Chip
+    //         icon={<HomeIcon />}
+    //         label={params.value}
+    //         color={params.value > 0 ? "info" : "default"}
+    //         size="small"
+    //         variant="filled"
+    //       />
+    //     </Tooltip>
+    //   ),
+    // },
+    // {
+    //   field: "incidentsCount",
+    //   headerName: "Incidencias",
+    //   width: 120,
+    //   align: "center",
+    //   headerAlign: "center",
+    //   renderCell: (params) => (
+    //     <Tooltip title="Total de incidencias registradas">
+    //       <Chip
+    //         icon={<ReportProblemIcon />}
+    //         label={params.value}
+    //         color={params.value > 0 ? "secondary" : "default"}
+    //         size="small"
+    //         variant="filled"
+    //       />
+    //     </Tooltip>
+    //   ),
+    // },
     {
       field: "preRegistrationDate",
       headerName: "Pre-registro",
@@ -386,14 +424,17 @@ function UsersManagement() {
       field: "registrationDate",
       headerName: "Fecha Registro",
       width: 140,
-      valueFormatter: (value) => value ? dayjs(value).format("DD/MM/YYYY") : "Pendiente",
+      valueFormatter: (value) =>
+        value ? dayjs(value).format("DD/MM/YYYY") : "Pendiente",
       renderCell: (params) => (
-        <Typography 
-          variant="body2" 
+        <Typography
+          variant="body2"
           color={params.value ? "text.primary" : "warning.main"}
           fontWeight={params.value ? 400 : 600}
         >
-          {params.value ? dayjs(params.value).format("DD/MM/YYYY") : "Pendiente"}
+          {params.value
+            ? dayjs(params.value).format("DD/MM/YYYY")
+            : "Pendiente"}
         </Typography>
       ),
     },
@@ -403,14 +444,128 @@ function UsersManagement() {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box sx={{ p: 3 }}>
         {/* Header */}
-        <Box sx={{ mb: 3 }}>
+        {/* <Box sx={{ mb: 3 }}>
           <Typography variant="h4" fontWeight={600} gutterBottom>
             Gestión de Clientes
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Completa registros, asigna pólizas y propiedades
           </Typography>
-        </Box>
+        </Box> */}
+<Card 
+  elevation={0}
+  sx={{ 
+    mb: 4,
+    background: "linear-gradient(135deg, #4fc3f7 0%, #0288d1 100%)",
+    color: 'white',
+    borderRadius: 3,
+    overflow: 'hidden',
+    position: 'relative',
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: 'rgba(255, 255, 255, 0.05)',
+      backdropFilter: 'blur(10px)'
+    }
+  }}
+>
+  {/* <CardContent sx={{ p: 4, position: 'relative', zIndex: 1 , display:"flex", justifyContent:"space-between" }}>
+    <Box>
+ <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+      <People sx={{ fontSize: 32, color: 'white', opacity: 0.95 }} />
+      <Typography 
+        variant="h5" 
+        fontWeight={700}
+        sx={{ 
+          color: 'white',
+          letterSpacing: '-0.02em'
+        }}
+      >
+        Gestión de Clientes
+      </Typography>
+    </Box>
+    
+    <Typography 
+      variant="body2" 
+      sx={{ 
+        color: 'rgba(255, 255, 255, 0.95)',
+        fontWeight: 400,
+        ml: 6
+      }}
+    >
+      Administración de registros, pólizas y propiedades asociadas
+    </Typography>
+    </Box>
+    <Box>
+      <Button variant="contained" size="medium" sx={{
+        background:"black",
+        p:2
+      }}>
+        Nuevo Usuario
+      </Button>
+    </Box>
+   
+  </CardContent> */}
+<CardContent sx={{ p: 4, position: 'relative', zIndex: 1, display: "flex", justifyContent: "space-between" }}>
+  <Box>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+      <People sx={{ fontSize: 32, color: 'white', opacity: 0.95 }} />
+      <Typography 
+        variant="h5" 
+        fontWeight={700}
+        sx={{ 
+          color: 'white',
+          letterSpacing: '-0.02em'
+        }}
+      >
+        Gestión de Clientes
+      </Typography>
+    </Box>
+    
+    <Typography 
+      variant="body2" 
+      sx={{ 
+        color: 'rgba(255, 255, 255, 0.95)',
+        fontWeight: 400,
+        ml: 6
+      }}
+    >
+      Administración de registros, pólizas y propiedades asociadas
+    </Typography>
+  </Box>
+  
+  <Box>
+    <Button 
+      variant="contained" 
+      size="medium" 
+      onClick={()=>{
+        router.push("/dashboard/registrar")
+      }}
+      sx={{
+        background: '#0288d1', // Color oscuro del gradiente
+        color: 'white',
+        p: 2,
+        borderRadius: 2,
+        textTransform: 'none',
+        fontWeight: 600,
+        boxShadow: '0 4px 12px rgba(2, 136, 209, 0.3)',
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          background: '#01579b', // Tono más oscuro del azul del gradiente
+          boxShadow: '0 6px 16px rgba(1, 87, 155, 0.5)',
+          transform: 'translateY(-2px)',
+        }
+      }}
+    >
+      Nuevo Usuario
+    </Button>
+  </Box>
+</CardContent>
+</Card>
 
         {/* Métricas Cards */}
         <Box
@@ -423,14 +578,22 @@ function UsersManagement() {
         >
           <Box sx={{ flex: "1 1 calc(16.66% - 16px)", minWidth: "180px" }}>
             <Card
+              elevation={0}
               sx={{
-                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                color: "white",
+                border: "1px solid",
+                borderRadius: 2,
+
+                borderColor: "#7fabeeff",
+                background: "#fff",
+                // background: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+                color: "#333",
                 height: "100%",
               }}
             >
               <CardContent>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+                <Box
+                  sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+                >
                   <PeopleIcon />
                   <Typography variant="body2" fontWeight={500}>
                     Total Clientes
@@ -445,14 +608,22 @@ function UsersManagement() {
 
           <Box sx={{ flex: "1 1 calc(16.66% - 16px)", minWidth: "180px" }}>
             <Card
+              elevation={0}
               sx={{
-                background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-                color: "white",
+                border: "1px solid",
+                borderRadius: 2,
+
+                borderColor: "divider",
+                background: "#fff",
+                // background: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+                color: "#333",
                 height: "100%",
               }}
             >
               <CardContent>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+                <Box
+                  sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+                >
                   <HourglassEmptyIcon />
                   <Typography variant="body2" fontWeight={500}>
                     Pendientes
@@ -470,14 +641,22 @@ function UsersManagement() {
 
           <Box sx={{ flex: "1 1 calc(16.66% - 16px)", minWidth: "180px" }}>
             <Card
+              elevation={0}
               sx={{
-                background: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-                color: "white",
+                border: "1px solid",
+                borderRadius: 2,
+
+                borderColor: "divider",
+                background: "#fff",
+                // background: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+                color: "#333",
                 height: "100%",
               }}
             >
               <CardContent>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+                <Box
+                  sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+                >
                   <VerifiedUserIcon />
                   <Typography variant="body2" fontWeight={500}>
                     Registrados
@@ -493,7 +672,7 @@ function UsersManagement() {
             </Card>
           </Box>
 
-          <Box sx={{ flex: "1 1 calc(16.66% - 16px)", minWidth: "180px" }}>
+          {/* <Box sx={{ flex: "1 1 calc(16.66% - 16px)", minWidth: "180px" }}>
             <Card
               sx={{
                 background: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
@@ -513,8 +692,8 @@ function UsersManagement() {
                 </Typography>
               </CardContent>
             </Card>
-          </Box>
-
+          </Box> */}
+          {/* 
           <Box sx={{ flex: "1 1 calc(16.66% - 16px)", minWidth: "180px" }}>
             <Card
               sx={{
@@ -538,18 +717,26 @@ function UsersManagement() {
                 </Typography>
               </CardContent>
             </Card>
-          </Box>
+          </Box> */}
 
           <Box sx={{ flex: "1 1 calc(16.66% - 16px)", minWidth: "180px" }}>
             <Card
+              elevation={0}
               sx={{
-                background: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+                border: "1px solid",
+                borderRadius: 2,
+
+                borderColor: "divider",
+                background: "#fff",
+                // background: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
                 color: "#333",
                 height: "100%",
               }}
             >
               <CardContent>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+                <Box
+                  sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+                >
                   <ReportProblemIcon />
                   <Typography variant="body2" fontWeight={500}>
                     Total Incidencias
@@ -567,13 +754,13 @@ function UsersManagement() {
         </Box>
 
         {/* Filtros */}
-        <Card sx={{ mb: 3, p: 2 }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+        <Card sx={{ mb: 3, p: 2 , background:"transparent"}} elevation={0}>
+          {/* <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
             <FilterListIcon color="primary" />
             <Typography variant="h6" fontWeight={600}>
               Filtros Avanzados
             </Typography>
-          </Box>
+          </Box> */}
 
           <Box
             sx={{
@@ -583,13 +770,22 @@ function UsersManagement() {
               mb: 2,
             }}
           >
-            <Box sx={{ flex: "1 1 calc(25% - 16px)", minWidth: "200px" }}>
-              <FormControl fullWidth size="small">
+            <Box
+              sx={{
+                flex: "1 1 calc(20% - 16px)",
+                minWidth: "200px",
+                borderRadius: 5,
+              }}
+            >
+              <FormControl fullWidth size="small" sx={{ borderRadius: 5 }}>
                 <InputLabel>Buscar por</InputLabel>
                 <Select
                   value={searchField}
                   label="Buscar por"
                   onChange={(e) => setSearchField(e.target.value)}
+                  sx={{
+                    borderRadius: 2,
+                  }}
                 >
                   <MenuItem value="all">Todos los campos</MenuItem>
                   <MenuItem value="name">Nombre</MenuItem>
@@ -600,15 +796,25 @@ function UsersManagement() {
               </FormControl>
             </Box>
 
-            <Box sx={{ flex: "1 1 calc(25% - 16px)", minWidth: "200px" }}>
+            <Box sx={{ flex: "1 1 calc(20% - 16px)", minWidth: "200px" }}>
               <TextField
                 fullWidth
                 size="small"
                 placeholder="Buscar cliente..."
                 value={search}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: 2, // aplica al input
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderRadius: 2, // aplica al borde visible
+                    },
+                  },
+                }}
                 onChange={(e) => setSearch(e.target.value)}
                 InputProps={{
-                  startAdornment: <SearchIcon sx={{ mr: 1, color: "action.active" }} />,
+                  startAdornment: (
+                    <SearchIcon sx={{ mr: 1, color: "action.active" }} />
+                  ),
                 }}
               />
             </Box>
@@ -620,6 +826,9 @@ function UsersManagement() {
                   value={statusFilter}
                   label="Estado"
                   onChange={(e) => setStatusFilter(e.target.value as any)}
+                  sx={{
+                    borderRadius: 2,
+                  }}
                 >
                   <MenuItem value="all">Todos</MenuItem>
                   <MenuItem value="registered">Registrados</MenuItem>
@@ -634,7 +843,28 @@ function UsersManagement() {
                 label="Fecha Inicio"
                 value={startDate}
                 onChange={(newValue) => setStartDate(newValue)}
-                slotProps={{ textField: { size: "small", fullWidth: true } }}
+               slotProps={{
+                    textField: {
+                      sx: {
+                        minWidth: "180px",
+                        background: "white",
+                        borderRadius: 2,
+                        "& .MuiInputBase-root": {
+                          borderRadius: "12px",
+                          backgroundColor: "white",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#b4b4b4",
+                        },
+                        "& .MuiPickersOutlinedInput-root": {
+                          borderRadius: 2,
+                          backgroundColor: "white",
+                        },
+                      },
+
+                      size: "small",
+                    },
+                  }}
               />
             </Box>
 
@@ -643,7 +873,28 @@ function UsersManagement() {
                 label="Fecha Fin"
                 value={endDate}
                 onChange={(newValue) => setEndDate(newValue)}
-                slotProps={{ textField: { size: "small", fullWidth: true } }}
+                slotProps={{
+                    textField: {
+                      sx: {
+                        minWidth: "180px",
+                        background: "white",
+                        borderRadius: 2,
+                        "& .MuiInputBase-root": {
+                          borderRadius: "12px",
+                          backgroundColor: "white",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#b4b4b4",
+                        },
+                        "& .MuiPickersOutlinedInput-root": {
+                          borderRadius: 2,
+                          backgroundColor: "white",
+                        },
+                      },
+
+                      size: "small",
+                    },
+                  }}
               />
             </Box>
           </Box>

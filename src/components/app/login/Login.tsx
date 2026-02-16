@@ -52,7 +52,7 @@ const Login: React.FC = () => {
         position: 'top-center'
       });   
 
-      router.push("/incidencia")
+      router.push("/dashboard")
 
       // Aquí iría la navegación a la pantalla principal
       // navigate('/dashboard');
