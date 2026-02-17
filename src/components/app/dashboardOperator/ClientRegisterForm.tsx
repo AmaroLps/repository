@@ -182,6 +182,7 @@ function ClientRegistrationForm() {
             elevation={0}
             sx={{ 
               position: { md: 'sticky' },
+              background:"transparent",
               top: 20,
               border: '1px solid',
               borderColor: 'divider',
@@ -371,7 +372,7 @@ function ClientRegistrationForm() {
         {/* Main Form Area */}
         <Box sx={{ flex: 1, minWidth: 0 }}>
           {/* Stepper */}
-          <Card elevation={0} sx={{ mb: 3, border: '1px solid', borderColor: 'divider', borderRadius: 2 }}>
+          <Card elevation={0} sx={{ mb: 3, border: '1px solid', borderColor: 'divider', borderRadius: 2 , background:"transparent" }}>
             <CardContent sx={{ p: 3 }}>
               <Stepper activeStep={activeStep} alternativeLabel>
                 {steps.map((label) => (
@@ -385,7 +386,7 @@ function ClientRegistrationForm() {
 
           {/* Form Sections */}
           {activeStep === 0 && (
-            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 2 }}>
+            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 2, background:"transparent" }}>
               <CardContent sx={{ p: 4 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
                   <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48 }}>
@@ -488,7 +489,7 @@ function ClientRegistrationForm() {
           )}
 
           {activeStep === 1 && (
-            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 2 }}>
+            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 2, background:"transparent" }}>
               <CardContent sx={{ p: 4 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
                   <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48 }}>
@@ -582,7 +583,7 @@ function ClientRegistrationForm() {
           )}
 
           {activeStep === 2 && (
-            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 2 }}>
+            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 2 , background:"transparent" }}>
               <CardContent sx={{ p: 4 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
                   <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48 }}>
@@ -676,7 +677,7 @@ function ClientRegistrationForm() {
           )}
 
           {activeStep === 3 && (
-            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 2 }}>
+            <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 2, background:"transparent" }}>
               <CardContent sx={{ p: 4 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
                   <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48 }}>
@@ -798,7 +799,7 @@ function ClientRegistrationForm() {
               <Button
                 variant="contained"
                 onClick={handleNext}
-                endIcon={<ArrowForwardIcon />}
+                // endIcon={<ArrowForwardIcon />}
                 sx={{ 
                   px: 3,
                   borderRadius: 2,
