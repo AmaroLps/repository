@@ -1,4 +1,4 @@
-import ClientRegistrationForm from "@/src/components/app/dashboardOperator/ClientRegisterForm";
+import ClientRegistrationForm from "@/src/components/app/dashboard-operator/ClientRegisterForm";
 
 export default function Page () {
     return <ClientRegistrationForm/>
